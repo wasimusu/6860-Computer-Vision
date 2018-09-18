@@ -10,9 +10,9 @@ function [blurImage] = BlurImage(origImage)
 % Copy image, loop over and replace elements with box average
 blurImage = origImage;
 for channel = 1:ch
-    for r = 1:2:row-2
-        for c = 1:2:col-2
-            blurImage(r:r+2, c:c+2, channel) = mean(mean(origImage(r:r+2, c:c+2, channel)));
+    for r = 1:2:row-1
+        for c = 1:2:col-1
+            blurImage(r:r+1, c:c+1, channel) = mean(mean(origImage(r:r+1, c:c+1, channel)));
         end
     end
 end

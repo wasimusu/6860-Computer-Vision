@@ -115,6 +115,6 @@ subplot(2,2,4); imshow(BB); title('Blurred Grayscale Image');
 pause;
 
 % close all the figures at the end
-close all;
-clear;
+close all;   
+%clear;
 % ---Finish Solving Problem 7 ---%
