@@ -1,30 +1,48 @@
-image = imread('pepper.jpg');
-gray = rgb2gray(image);
+image = imread('food.jpg');
 
 range = [0,255];
-[selfScaledFood, params] = Scaling(gray, range);
-imshow(selfScaledFood); title('self scaled food');
+[scaledFood, params] = Scaling(image, range);
+imshow(scaledFood); title('self scaled food');
+pause;
+% -----Finish Solving Problem 1 -----%
 
-%-----Finish Solving Problem 1 -----%
-
-matScaledFood = imadjust(image);
+oldMin = double(min(min(image))/255);
+oldMax = double(max(max(image))/255);
+matScaledFood = imadjust(image, [oldMin, oldMax],[0, 1]);
 figure;
-subplot(1,2,1); imshow(matScaledFood); title('Adjusted using matlab');
-subplot(1,2,2); imshow(selfScaledFood); title('Adjusted using self defined function');
-%-----Finish Solving Problem 2 -----%
+subplot(1,2,1); imshow(matScaledFood); title('Using matlab');
+subplot(1,2,2); imshow(scaledFood); title('Using self-defined function');
+pause;
+% -----Finish Solving Problem 2 -----%
 
 figure;
-CalHist(selfScaledFood, true);
-CalHist(selfScaledFood, false);
-CalHist(matScaledFood, true);
-CalHist(matScaledFood, false);
-%-----Finish Solving Problem 3 -----%
+hist1 = CalHist(scaledFood, false);
+hist1n = CalHist(scaledFood, true);
+hist2 = CalHist(matScaledFood, false);
+hist2n = CalHist(matScaledFood, true);
+figure;
+subplot(2,2,1); plot(hist1); title('Hist ScaledFood');
+subplot(2,2,2); plot(hist1n); title('Hist ScaledFood Norm');
+subplot(2,2,3); plot(hist2); title('Hist MatScaled');
+subplot(2,2,4); plot(hist2n); title('Hist MatScaled Norm');
+pause;
+% -----Finish Solving Problem 3 -----%
 
-matEnhancedImage = histeq(gray);
-myEnhancedImage = HistEqualization(gray);
+M = 1000;
+
+tic
+equalizedFood = HistEqualization(image);
+toc;
+disp("Using self defined function for computing hist eq " + toc);
+% -----Finish Solving Problem 4 -----%
+
+matEnhancedImage = histeq(image);
+disp("Using matlab's function for computing hist eq " + m2*M);
+
 figure;
 subplot(1,2,1); imshow(matEnhancedImage); title('Histogram Equalization using matlab');
-subplot(1,2,2); imshow(myEnhancedImage); title('Histogram Equalization using self defined function');
+subplot(1,2,2); imshow(equalizedFood); title('Histogram Equalization using self defined function');
+pause;
+% -----Finish Solving Problem 5 -----%
 
-disp("The problems are easier, Matlab is not. Matlab someday thought to hall proprietary things like starting index from 1 or using % as comments. It does not really want to go mix in the crowd.");
-%-----Finish Solving Problem 5 -----%
+close all;

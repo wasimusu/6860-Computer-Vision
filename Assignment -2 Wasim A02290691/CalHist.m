@@ -13,14 +13,14 @@ function [hist] = CalHist(inputImage, normalize)
         count(index+1) = count(index+1) + 1;
     end
 
+    % Normalize if required
     if normalize
         count = count / length(inputImage);
     end
-    
-    
+        
     %Plot the histogram
     xAxis = 1:256;
-    plot(xAxis, count);
+    plot(xAxis);
     size(count)
     
     hist = count;

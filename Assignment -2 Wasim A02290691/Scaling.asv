@@ -5,21 +5,23 @@ function [scaledImage, transferParams] = Scaling(inputImage, range)
 
     % Max and min intensity of desired image
     newMax = max(range);
-    newMin = min(range);
+    a = min(range);
 
     % Check if the intensity range is fine
     if (max(range) > 255) || (min(range) < 0)
         disp('Transfer Parameters invalid');
     end
+    
+    % Copy the image
+    scaledImage = inputImage;
 
     % Scale the image
-    slope = (newMax-newMin)/(oldMax - oldMin);
-    %slope = double((newMax-oldMax)/(newMin - oldMin));
-    disp("Slope : " + slope);
-    scaledImage = (inputImage - oldMin)*slope + newMin;
+    norm_factor = (newMax-a)/(oldMax - oldMin);
+    scaledImage = (inputImage - oldMin)*norm_factor + a;
+    range = newMax -a ;
     %imshow(scaledImage);
 
     % Just passing on the transfer Params
-    transferParams = [slope, newMin, oldMin];
-
+    transferParams = [norm_factor, a, oldMin]
+    
 end

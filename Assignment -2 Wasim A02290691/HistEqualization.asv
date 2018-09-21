@@ -1,4 +1,4 @@
-function [enhancedIm] = HistEqualization(inputImage)
+function [enhancedIm, parameters] = HistEqualization(inputImage)
     
     originalImage = inputImage;
 
@@ -40,7 +40,8 @@ function [enhancedIm] = HistEqualization(inputImage)
             enhancedIm(i,j) = count(index+1);
         end
     end
-        
+    
+    parameters = count(
 %     %Plot the histogram
 %     xAxis = 1:256;
 %     plot(xAxis, count);
