@@ -55,8 +55,11 @@ subplot(1,2,2); plot(t2*255); title('Equalization using self defined function');
 xlabel('Input Intensity'); ylabel('Output Intensity');
 pause;
 
-disp('The Histogram equalization in Problem 4 and 5 return almost similar function');
-disp('It is really annoying that Matlab has to be leared from Scratch regardless of whether you have programming experience or not. I really struggled with type cast conversions. Timing methods was a new thing for me. I also learnt that Matlab does a slight different implementation of imadjust, hist computation and histogram equalization because of which my method ');
+disp('The Histogram equalization in Problem 4 and 5 return similar function but matlab returns normalized function');
+disp('It is really annoying that Matlab has to be leared from Scratch regardless of whether you have programming experience or not. For instance, it decided to use ~ instead of !.');
+disp("I really struggled with type cast conversions. The problems are easy but Matlab was not.");
+disp("Timing methods allowed me to see that Matlab is definitely faster than my code which I was already aware.");
+disp("Histogram equalization is a cool method that does contrast stretching. It makes the images look nicer for most of the cases");
 % -----Finish Solving Problem 5 -----%
 
 close all;
