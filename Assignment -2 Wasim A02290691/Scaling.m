@@ -14,12 +14,9 @@ function [scaledImage, transferParams] = Scaling(inputImage, range)
 
     % Scale the image
     slope = (newMax-newMin)/(oldMax - oldMin);
-    %slope = double((newMax-oldMax)/(newMin - oldMin));
-    disp("Slope : " + slope);
     scaledImage = (inputImage - oldMin)*slope + newMin;
-    %imshow(scaledImage);
 
     % Just passing on the transfer Params
-    transferParams = [slope, newMin, oldMin];
-
+    uniqueA = unique(inputImage(:));    
+    transferParams = (uniqueA - oldMin)*slope + newMin;
 end

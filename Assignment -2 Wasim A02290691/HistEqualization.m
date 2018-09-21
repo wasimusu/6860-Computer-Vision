@@ -22,15 +22,15 @@ function [enhancedIm, parameters] = HistEqualization(inputImage)
     end
 
     % accumulate the intesity count and multiply by the newMax
-    for i = 2:255
+    for i = 2:256
         count(i) = count(i) + count(i-1);
     end
 
     % Multiply by the new Max level
-    newMaxIntensity = 255;
+    newMaxIntensity = 256;
     L = newMaxIntensity - 1;
-    count(1) = count(1)* L;    
-    count = uint8(count * 254);    
+    % count(1) = count(1)* L;    
+    count = uint8(count * L);    
 
     % Do the mapping
     [row, col] = size(originalImage);

@@ -1,50 +1,60 @@
+% WASIM AKRAM KHAN -- Assignment 2
+% A02290691
 image = imread('food.jpg');
-%gray = rgb2gray(image);
-gray = image; % Since it's already a gray image
 
-% range = [0,255];
-% [selfScaledFood, params] = Scaling(image, range);
-% imshow(selfScaledFood); title('self scaled food');
-% % -----Finish Solving Problem 1 -----%
-% pause;
-% 
-% oldMin = double(min(min(image))/255);
-% oldMax = double(max(max(image))/255);
-% matScaledFood = imadjust(image, [oldMin, oldMax],[0, 1]);
-% figure;
-% subplot(1,2,1); imshow(matScaledFood); title('Using matlab');
-% subplot(1,2,2); imshow(selfScaledFood); title('Using self-defined function');
-% pause;
-% % -----Finish Solving Problem 2 -----%
+range = [0,255];
+[scaledFood, params] = Scaling(image, range);
+imshow(scaledFood); title('self scaled food');
+figure; plot(params); title('Scaling Function : Displaying Slope'); xlabel('X'); ylabel('Y');
+% The plot basically shows the scaled value for all the unique elements in
+% the image. X and Y do not necessarily correspond in values.
+pause;
+% -----Finish Solving Problem 1 -----%
+
+oldMin = double(min(min(image)))/255;
+oldMax = double(max(max(image)))/255;
+matScaledFood = imadjust(image, [oldMin, oldMax], [0.0, 1.0]);
+figure;
+subplot(1,2,1); imshow(matScaledFood); title('Using matlab');
+subplot(1,2,2); imshow(scaledFood); title('Using self-defined function');
+pause;
+% -----Finish Solving Problem 2 -----%
 
 figure;
-hist1 = CalHist(selfScaledFood, true);
-hist2 = CalHist(selfScaledFood, false);
-hist3 = CalHist(matScaledFood, true);
-hist4 = CalHist(matScaledFood, false);
+hist1 = CalHist(scaledFood, false);
+hist1n = CalHist(scaledFood, true);
+hist2 = CalHist(matScaledFood, false);
+hist2n = CalHist(matScaledFood, true);
+subplot(2,2,3); plot(hist1); title('Hist ScaledFood');
+subplot(2,2,1); plot(hist1n); title('Hist ScaledFood Norm');
+subplot(2,2,4); plot(hist2); title('Hist MatScaled');
+subplot(2,2,2); plot(hist2n); title('Hist MatScaled Norm');
+pause;
 % -----Finish Solving Problem 3 -----%
 
-m1 = cputime;
-matEnhancedImage = histeq(image);
-m2 = cputime - m1;
-disp("Using matlab's function for computing hist eq " + m2*1000000);
+tic
+[equalizedFood, t1] = HistEqualization(image);
+toc;
+disp("Using self defined function for computing hist eq " + toc);
+% ----- Finish Solving Problem 4 -----%
 
-m3 = cputime;
-myEnhancedImage = HistEqualization(image);
-m4 = cputime - m3;
-disp("Using self defined function for computing hist eq " + m4*1000);
-
-if matEnhancedImage == myEnhancedImage
-    disp('Your method is good');
-else
-    disp('It is not correct');
-end
+tic;
+[matEnhancedImage, t2] = histeq(image);
+toc;
+disp("Using matlab's function for computing hist eq " + toc);
 
 figure;
-subplot(1,2,1); imshow(matEnhancedImage); title('Histogram Equalization using matlab');
-subplot(1,2,2); imshow(myEnhancedImage); title('Histogram Equalization using self defined function');
-
-% disp("The problems are easier, Matlab is not. Matlab someday thought to hall proprietary things like starting index from 1 or using % as comments. It does not really want to go mix in the crowd.");
-% -----Finish Solving Problem 5 -----%
+subplot(1,2,1); imshow(matEnhancedImage); title('Equalization using matlab');
+subplot(1,2,2); imshow(equalizedFood); title('Self defined function');
 pause;
+
+figure;
+subplot(1,2,1); plot(t1); title('Equalization using matlab'); xlabel(';
+subplot(1,2,2); plot(t2*255); title('Equalization using self defined function');
+pause;
+
+disp('The Histogram equalization in Problem 4 and 5 return almost similar function');
+disp('It is really annoying that Matlab has to be leared from Scratch regardless of whether you have programming experience or not. I really struggled with type cast conversions. Timing methods was a new thing for me. I also learnt that Matlab does a slight different implementation of imadjust, hist computation and histogram equalization because of which my method ');
+% -----Finish Solving Problem 5 -----%
+
 close all;
