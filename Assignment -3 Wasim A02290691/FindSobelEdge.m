@@ -1,7 +1,8 @@
-function [filteredImage] = AverageFiltering(image, mask)
+function [edge] = FindSobelEdge(image, mask)
        
     % filteredImage is the container for output image
-    filteredImage = image;
+    edge = image;
+
    % Check if the mask is valid 
    [rowMask, colMask] = size(mask);
    if rowMask ~= colMask
@@ -19,12 +20,11 @@ function [filteredImage] = AverageFiltering(image, mask)
    
    % Convert data types
    image = double(image);
-   filteredImage = double(filteredImage);
+   edge = double(edge);
    mask = double(mask);
    for i = 1:row-stepSize/2
        for j = 1:col-stepSize/2
-           filteredImage(i,j) = sum(sum(image(i:i+stepSize, j:j+stepSize).*mask));
+           edge(i,j) = sum(sum(image(i:i+stepSize, j:j+stepSize).*mask));
        end
    end
-   filteredImage = uint8(filteredImage);    
 end

@@ -9,6 +9,7 @@ standardMask = standardMask / sum(sum(standardMask));
 
 filteredImage1 = AverageFiltering(image, weightedMask);
 filteredImage2 = AverageFiltering(image, standardMask);
+
 subplot(1,3,1); imshow(image); title('Average Filter Input');
 subplot(1,3,2); imshow(filteredImage1); title('Weighted Mask');
 subplot(1,3,3); imshow(filteredImage2); title('Standard Mask');
@@ -32,6 +33,7 @@ pause;
 
 image = imread('moon.jpg');
 laplacian = fspecial('laplacian');
+mask = [];
 edge = imfilter(image, laplacian);
 sharpImage = image - edge;
 figure;
@@ -48,7 +50,6 @@ edgeImage = sobelEdge(image, threshold);
 subplot(1,2,2); imshow(edgeImage); title('Sobel edge');
 subplot(1,2,1); imshow(image);title('original image');
 disp("I determined the threhosld by computing the histogram of the image and selecting the value which clearly divides the histogram into two parts - black and white");
-disp("This is also known as Ostu's algorithm which is used to find thresholds in image");
 pause
 % %-----Finish Solving Problem II-1 -----%
 
@@ -80,6 +81,9 @@ subplot(1,2,1); imshow(image);title('Original 3');
 subplot(1,2,2); imshow(cleanImage);title('Cleaned 3');
 pause;
 
+disp('I believe cleaning image with text is a trade-off problem with trade-off between information loss and clean image.');
+disp('Either you get clean images with information loss or your get less clean images with less information loss');
+disp('I used adaptive thresholding dividing images into variable size grid (m*n) and threshold on each of the grid');
 % %-----Finish Solving Problem III -----%
 
 close all;
