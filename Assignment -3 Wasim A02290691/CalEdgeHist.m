@@ -1,31 +1,20 @@
-function edgeHist = CalEdgeHist(image, bin)
-    bin;
-    
+function edgeHist = CalEdgeHist(image, bin)    
     % mask for sobel in X and Y direction
     maskX = [-1 -2 -1; 0 0 0; 1 2 1];
     maskY = maskX';
 
     % compute sobel edge in X and Y direction
-    sobelX = AverageFiltering(image, maskX);    
-    sobelY = AverageFiltering(image, maskY);
+    sobelX = double(AverageFiltering(image, maskX));    
+    sobelY = double(AverageFiltering(image, maskY));
     
-    imshow(sobelX+sobelY);
-    threshold = 0.5
-    sobelX = imbinarize(sobelX,threshold);
-    sobelY = imbinarize(sobelY,threshold);
-    sobel = sobelX + sobelY;
-     figure;imshow(sobel);title('sobel edge');
-%     figure;title('Binarize');
-
-    % add X and Y for a complete view
-    % sobel = sobelX + sobelY;
-
     % Compute gradients
-    gradients = atan(sobelY ./ sobelX);
-    gradients = gradients(:);
-    gradients(1:10)
-    imhist(gradients);
-    imshow(sobelX);
-    figure;imshow(gradients);
-    edgeHist = sobelX;
+    gradients = double(sobelX ./ sobelY);
+    gradients(isnan(gradients))=0;
+    gradients = atan(gradients);
+%     gradients = gradients(:);
+%     imhist(gradients);
+%     figure;imshow(gradients);
+    
+    edgeHist = imhist(gradients,bin);
+    
 end

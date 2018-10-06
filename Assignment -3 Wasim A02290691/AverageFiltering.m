@@ -28,6 +28,5 @@ function [filteredImage] = AverageFiltering(image, mask)
            filteredImage(i,j) = sum(sum(image(i:i+stepSize, j:j+stepSize).*mask));
        end
    end
-   filteredImage = uint8(filteredImage);
-    
+   filteredImage = (filteredImage);    
 end
