@@ -6,12 +6,12 @@ function [sobel] = sobelEdge(image, threshold)
     % compute sobel edge in X and Y direction
     sobelX = AverageFiltering(image, maskX);    
     sobelY = AverageFiltering(image, maskY);
-    
+
 %   threshold = 0.5;
     sobelX = imbinarize(sobelX,threshold);
     sobelY = imbinarize(sobelY,threshold);
     sobel = sobelX + sobelY;
-    imshow(sobel);
+    % imshow(sobel);
     
     % Testing if adding the edge images first will yield better results
 %     edgeImage = sobelX + sobelY;

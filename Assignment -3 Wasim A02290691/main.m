@@ -7,12 +7,12 @@ weightedMask = [1,2,1;2,4,2;1,2,1]/16;
 standardMask = ones(5);
 standardMask = standardMask / sum(sum(standardMask));
 
-filteredImage1 = AverageFiltering(image, weightedMask);
-filteredImage2 = AverageFiltering(image, standardMask);
+avgFiltered1 = AverageFiltering(image, weightedMask);
+avgFiltered2 = AverageFiltering(image, standardMask);
 
 subplot(1,3,1); imshow(image); title('Average Filter Input');
-subplot(1,3,2); imshow(filteredImage1); title('Weighted Mask');
-subplot(1,3,3); imshow(filteredImage2); title('Standard Mask');
+subplot(1,3,2); imshow(avgFiltered1); title('Weighted Mask');
+subplot(1,3,3); imshow(avgFiltered2); title('Standard Mask');
 pause;
 disp('Weighted Mask preserves edge information, standard mask does not');
 disp("That's why I believe standard masks are used less compared to weighted masks like Gaussian");
@@ -22,23 +22,28 @@ disp("That's why I believe standard masks are used less compared to weighted mas
 circuit = imread('circuit.jpg');
 weightedMask = [1,2,1;2,4,2;1,2,1];
 standardMask = ones(5);
-filteredImage1 = MedianFiltering(circuit, weightedMask);
-filteredImage2 = MedianFiltering(circuit, standardMask);
+medFilter1 = MedianFiltering(circuit, weightedMask);
+medFilter2 = MedianFiltering(circuit, standardMask);
 figure;
 subplot(1,3,1); imshow(circuit); title('Median Filter Input');
-subplot(1,3,2); imshow(filteredImage1); title('Weighted Mask');
-subplot(1,3,3); imshow(filteredImage2); title('Standard Mask');
+subplot(1,3,2); imshow(medFilter1); title('Weighted Mask');
+subplot(1,3,3); imshow(medFilter2); title('Standard Mask');
 pause;
 % % -----Finish Solving Problem I-2 -----%
 
 image = imread('moon.jpg');
-laplacian = fspecial('laplacian');
-mask = [];
-edge = imfilter(image, laplacian);
-sharpImage = image - edge;
+mask = [1 1 1; 1 -8 1; 1 1 1];
+%mask = fspecial('laplacian');
+edge = imfilter(image, mask);
+figure;imshow(edge);
+[edgeScaled, key] = Scaling(edge, [0 255]);
+%edgeScaled = imadjust(edge, [0 1], [0 1]);
+sharpImage = image - uint8(edgeScaled);
 figure;
-subplot(1,2,2); imshow(sharpImage); title('sharp image');
-subplot(1,2,1); imshow(image);title('original image');
+subplot(2,2,1); imshow(image);title('original image');
+subplot(2,2,2); imshow(edge); title('Edge');
+subplot(2,2,3); imshow(edgeScaled); title('Scaled edge');
+subplot(2,2,4); imshow(sharpImage);title('Sharp Image');
 pause;
 % % -----Finish Solving Problem I-3 -----%
 
@@ -49,14 +54,18 @@ threshold = 0.5;
 edgeImage = sobelEdge(image, threshold);
 subplot(1,2,2); imshow(edgeImage); title('Sobel edge');
 subplot(1,2,1); imshow(image);title('original image');
+disp("I treated this problem as a thresholding problem.");
 disp("I determined the threhosld by computing the histogram of the image and selecting the value which clearly divides the histogram into two parts - black and white");
+disp("Still I think it takes a lot of hit and trials to find sharp edges");
 pause
 % %-----Finish Solving Problem II-1 -----%
 
 image = imread('rice.jpg');
-histGrad = CalEdgeHist(image, 10);
+[sobel,histGrad] = CalEdgeHist(image, 18);
 figure;
-bar(histGrad); title('Histgoram of gradients');
+subplot(1,3,1); imshow(image); title('Rice');
+subplot(1,3,2); imshow(sobel);title('Edge');
+subplot(1,3,3);bar(histGrad); title('Histgoram of gradients');
 pause;
 % %-----Finish Solving Problem II-2 -----%
 

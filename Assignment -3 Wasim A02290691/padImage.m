@@ -7,6 +7,6 @@ function paddedImage = padImage(image, mask)
    paddedImage = zeros(row+stepSize/2,col+stepSize/2);
    paddedImage(stepSize/2:row-1+stepSize/2, stepSize/2:col-1+stepSize/2) = image;
     
-   imshow(paddedImage);
+   % imshow(paddedImage);
 end
 
