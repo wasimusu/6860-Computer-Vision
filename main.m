@@ -23,7 +23,6 @@ weightedMask = [1,2,1;2,4,2;1,2,1];
 standardMask = ones(5);
 filteredImage1 = MedianFiltering(circuit, weightedMask);
 filteredImage2 = MedianFiltering(circuit, standardMask);
-figure;
 subplot(1,3,1); imshow(circuit); title('Median Filter Input');
 subplot(1,3,2); imshow(filteredImage1); title('Weighted Mask');
 subplot(1,3,3); imshow(filteredImage2); title('Standard Mask');

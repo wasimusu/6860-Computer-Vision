@@ -1,4 +1,4 @@
-function [filteredImage] = MedianFiltering(image, mask)
+function [filteredImage] = AverageFiltering(image, mask)
        
     % filteredImage is the container for output image
     filteredImage = image;
@@ -22,21 +22,11 @@ function [filteredImage] = MedianFiltering(image, mask)
    % Convert data types
    image = double(image);
    filteredImage = double(filteredImage);
-   mask = mask(:); %convert mask into row vector
+   mask = double(mask);
    for i = 1:row-stepSize/2
-       for j = 1:col-stepSize/2            
-           % Get multiples of roi elements
-           roi = image(i:i+stepSize, j:j+stepSize);
-           roi = roi(:);
-           elements = zeros(1,stepSize+1);
-           for elementIndex = 1 : length(roi)
-               for maskIndex = 1 : length(mask)
-                   elements(elementIndex) = roi(elementIndex);
-               end
-           end
-           % Assign median element to the image
-           filteredImage(i,j) = median(elements);       
+       for j = 1:col-stepSize/2
+           filteredImage(i,j) = sum(sum(image(i:i+stepSize, j:j+stepSize).*mask));
        end
    end
-   filteredImage = uint8(filteredImage);    
+   filteredImage = (filteredImage);    
 end
