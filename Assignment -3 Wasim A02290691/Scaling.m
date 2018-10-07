@@ -20,8 +20,7 @@ function [scaledImage, transferParams] = Scaling(inputImage, range)
     uniqueA = unique(inputImage(:));
     B = unique(scaledImage(:));
  
-    for i = 1:length(uniqueA)
-        disp([uniqueA(i) B(i)])
-    end
-    transferParams = (uniqueA - oldMin)*slope + newMin;
+%     for i = 1:length(uniqueA)
+%         disp([uniqueA(i) B(i)])
+%     end
 end

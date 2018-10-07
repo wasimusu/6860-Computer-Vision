@@ -18,7 +18,6 @@ disp('Weighted Mask preserves edge information, standard mask does not');
 disp("That's why I believe standard masks are used less compared to weighted masks like Gaussian");
 % % -----Finish Solving Problem I-1 -----%
 
-
 circuit = imread('circuit.jpg');
 weightedMask = [1,2,1;2,4,2;1,2,1];
 standardMask = ones(5);
@@ -35,7 +34,6 @@ image = imread('moon.jpg');
 mask = [1 1 1; 1 -8 1; 1 1 1];
 %mask = fspecial('laplacian');
 edge = imfilter(image, mask);
-figure;imshow(edge);
 [edgeScaled, key] = Scaling(edge, [0 255]);
 %edgeScaled = imadjust(edge, [0 1], [0 1]);
 sharpImage = image - uint8(edgeScaled);
@@ -56,6 +54,7 @@ subplot(1,2,2); imshow(edgeImage); title('Sobel edge');
 subplot(1,2,1); imshow(image);title('original image');
 disp("I treated this problem as a thresholding problem.");
 disp("I determined the threhosld by computing the histogram of the image and selecting the value which clearly divides the histogram into two parts - black and white");
+disp("A large range of values separate the two peaks of histogram but on increasing the threshold I got thinner edges");
 disp("Still I think it takes a lot of hit and trials to find sharp edges");
 pause
 % %-----Finish Solving Problem II-1 -----%
