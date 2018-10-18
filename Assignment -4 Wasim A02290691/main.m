@@ -103,11 +103,12 @@ newV(:,:) = 0;
 Y2 = idwt2(A,H,newV,D,'db2');
 
 % Setting second level horizontal detail coefficients to 0
+dwtmode('per');
 [A2, H2, V2, D2] = dwt2(A, 'db2');
 H2(:,:) = 0;
 newA1 = idwt2(A2, H2, V2, D2,'db2');
 figure;imshow(newA1); title('New');
-Y3 = idwt2(newA1(1:257,1:257), H, V, D,'db2');
+Y3 = idwt2(newA1, H, V, D,'db2');
 
 figure; imshow(Y1); title('Average approx coefficients');
 figure; imshow(Y2); title('Zero vertical detail for first level');

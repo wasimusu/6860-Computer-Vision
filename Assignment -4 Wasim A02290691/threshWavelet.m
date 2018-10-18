@@ -1,18 +1,26 @@
-function newA = threshWavelet(A, H, V,D)
+function [nH, nV, nD] = threshWavelet(A, H, V,D)
     
-    sigma = median(median([H,V,D])) / 0.6745;
+    sigma = median(median([abs(H), abs(V), abs(D)])) / 0.6745;
     [r,c] = size(A);
     M = 3*r*c;
     thresh = sigma * sqrt(2*log(M));
-    
-    % Indices for thresholding
-    greaterI = find(A>=thresh);
-    lessI = find(A<=thresh);
-    zeroI = A==0;
 
+    nH = applyThresh(H, thresh);
+    nV = applyThresh(V, thresh);
+    nD = applyThresh(D, thresh);
+
+end
+
+function newF = applyThresh(F, thresh)
+    % Indices for thresholding
+    minusI = find(F>=thresh);
+    plusI = find(F<=-thresh);
+    zeroI = find(abs(F)<thresh);
+    
+    disp([length(minusI), length(plusI), length(zeroI)]);
     % Apply thresholding
-    newA = A;
-    newA(zeroI) = 0;
-    newA(lessI) = A(lessI) - thresh;
-    newA(greaterI) = A(greaterI) + thresh;
+    newF = F;
+    newF(zeroI) = 0;
+    newF(plusI) = F(plusI) + thresh;
+    newF(minusI) = F(minusI) - thresh;
 end

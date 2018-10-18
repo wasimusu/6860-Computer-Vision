@@ -3,19 +3,26 @@ function [] = gaussianWN()
     image = imread('Lena.jpg');
     imageN = imnoise(image, 'gaussian', 0, 0.01);
 
+    dwtmode('per');
+    % Manipulate first, second and third level of Decomposition layers
     [A, H, V, D] = dwt2(im2double(imageN), 'db2');
-
-    % Manipulating first, second and third level A 
-    [A2, H2, V2, D2] = dwt2(threshWavelet(A,H,V,D), 'db2');
-    [A3, H3, V3, D3] = dwt2(threshWavelet(A2,H2,V2,D2), 'db2');
-    [A4, H4, V4, D4] = dwt2(threshWavelet(A3,H3,V3,D3), 'db2');
-
+    [H,V,D] = threshWavelet(A,H,V,D); % First level
+    [A2, H2, V2, D2] = dwt2(A, 'db2');
+    [H2, V2, D2] = threshWavelet(A2, H2, V2, D2); % Second level
+    [A3, H3, V3, D3] = dwt2(A2, 'db2');
+    [H3, V3, D3] = threshWavelet(A3, H3, V3, D3);  % Third level
+    
     % Rollback
-    nA3 = idwt2(A4, H4, V4, D4,'db2');
-    nA2 = idwt2(nA3, H3, V3, D3,'db2');
+    nA2 = idwt2(A3, H3, V3, D3,'db2');
     nA1 = idwt2(nA2, H2, V2, D2,'db2');
-    Y = idwt2(nA1(1:257,1:257), H, V, D,'db2');
-
+    Y = idwt2(nA1, H, V, D,'db2');
+    
+    if(imageN == Y)
+        disp('No changes');
+    else
+        disp('Some minor changes');
+    end
+    
+    figure; imshow(imageN); title('Input Image');
     figure; imshow(Y); title('Noise Free');
-    figure; imshow(image); title('Input Image');
 end
