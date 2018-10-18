@@ -113,3 +113,6 @@ figure; imshow(Y1); title('Average approx coefficients');
 figure; imshow(Y2); title('Zero vertical detail for first level');
 figure; imshow(Y3); title('Second level horizontal detail set to 0');
 % % % -----Finish Solving Problem V-2 -----%
+
+gaussianWN();
+% % % -----Finish Solving Problem VI -----%
