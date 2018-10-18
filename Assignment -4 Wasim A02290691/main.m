@@ -1,5 +1,5 @@
-% % WASIM AKRAM KHAN -- Assignment 3
-% % A02290691
+% WASIM AKRAM KHAN -- Assignment 3
+% A02290691
 sample = imread('sample.jpg');
 [H, filtered_sample] = butterworthFilter(sample, 40,2);
 figure;
@@ -59,10 +59,57 @@ sampleP = angle(sampleF);
 % Restoring capital image with its' phase and magnitude of other image
 restCap = sampleM.*exp(1i*capP);
 restCap = uint8(real(ifft2(ifftshift(restCap))));
-figure;imshow(restCap);title('restored sample');
+figure; imshow(restCap); title('restored cap');
 
 % Restoring sample image with its' phase and magnitude of other image
 restSample = capM.*exp(1i*sampleP);
 restSample = uint8(real(ifft2(ifftshift(restSample))));
-figure;imshow(restSample);title('restored sample');
+figure; imshow(restSample); title('restored sample');
 % % -----Finish Solving Problem III-2 -----%
+
+image = imread('Lena.jpg');
+% Maximum decomposition level
+N = wmaxlev(size(image), 'db2');
+% Decompose wavelet into C and Bookkeeping matrix S
+[C,S] = wavedec2(image, N, 'db2');
+output = uint8(waverec2(C, S, 'db2'));
+figure; imshow(output); title('Decomposition and reconstruction of Lena');
+if (image == output)
+    disp('Perfect decomposition and reconstruction');
+else
+    disp('Imperfect decomposition and reconstruction');
+end
+pause;
+% % -----Finish Solving Problem V-1 -----%
+
+% Problem of three separate reconstruction
+image = imread('Lena.jpg');
+
+% First level decomposition
+[A, H, V, D] = dwt2(im2double(image), 'db2');
+% Set the 2*2 blocks of Approx coeff to their average
+[r,c] = size(A);
+newA = A;
+for i = 1:2:r-1
+    for j = 1:2:c-1
+        newA(i:i+1,j:j+1) = mean(mean(A(i:i+1,j:j+1)));
+    end
+end
+Y1 = idwt2(newA,H,V,D,'db2');
+
+% Set the first level vertical details to 0
+newV = V;
+newV(:,:) = 0;
+Y2 = idwt2(A,H,newV,D,'db2');
+
+% Setting second level horizontal detail coefficients to 0
+[A2, H2, V2, D2] = dwt2(A, 'db2');
+H2(:,:) = 0;
+newA1 = idwt2(A2, H2, V2, D2,'db2');
+figure;imshow(newA1); title('New');
+Y3 = idwt2(newA1(1:257,1:257), H, V, D,'db2');
+
+figure; imshow(Y1); title('Average approx coefficients');
+figure; imshow(Y2); title('Zero vertical detail for first level');
+figure; imshow(Y3); title('Second level horizontal detail set to 0');
+% % % -----Finish Solving Problem V-2 -----%
