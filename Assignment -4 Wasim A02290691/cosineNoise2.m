@@ -1,4 +1,5 @@
 function [] = cosineNoise()
+
     image = imread('boy_noisy.gif');
     fImage = fftshift(fft2(image));
 
