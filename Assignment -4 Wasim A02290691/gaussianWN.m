@@ -1,11 +1,7 @@
-function [] = gaussianWN()
-    % Read lena image and add gaussian noise of 0 mean and 0.01 variance
-    image = imread('Lena.jpg');
-    imageN = imnoise(image, 'gaussian', 0, 0.01);
-    
+function [Y] = gaussianWN(image)    
     dwtmode('per');
     % Manipulate first, second and third level of Decomposition layers
-    [A, H, V, D] = dwt2(imageN, 'db2');
+    [A, H, V, D] = dwt2(image, 'db2');
     [H, V, D] = threshWavelet(H,V,D); % First level
     
     [A2, H2, V2, D2] = dwt2(A, 'db2');
@@ -20,12 +16,9 @@ function [] = gaussianWN()
     Y = idwt2(nA1, H, V, D,'db2');
     Y = uint8(Y);
     
-    if(imageN == Y)
+    if(image == Y)
         disp('No changes');
     else
         disp('Some minor changes');
     end
-    
-    figure; imshow(imageN); title('Input Image');
-    figure; imshow(Y); title('Noise Free');
 end

@@ -1,5 +1,4 @@
-function [] = cosineNoise()
-    image = imread('boy_noisy.gif');
+function [Y] = cosineNoise(image)
     fImage = fftshift(fft2(image));
 
     % Compute the magnitude of the FFT
@@ -31,6 +30,5 @@ function [] = cosineNoise()
     end
 
     output = uint8(real(ifft2(ifftshift(fImage))));
-    figure;imshow(image); title('Input');
-    figure;imshow(output);title('Output');    
+    Y = output;
 end

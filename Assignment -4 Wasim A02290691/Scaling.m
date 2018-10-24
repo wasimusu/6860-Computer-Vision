@@ -1,8 +1,8 @@
-function [scaledImage, transferParams] = Scaling(inputImage, range)
+function [scaledImage, P] = Scaling(inputImage, range)
     % Max and min intensity of input image
     oldMax = max(max(inputImage));
     oldMin = min(min(inputImage));
-    disp([oldMin oldMax]);
+
     % Max and min intensity of desired image
     newMax = max(range);
     newMin = min(range);
@@ -17,6 +17,6 @@ function [scaledImage, transferParams] = Scaling(inputImage, range)
     scaledImage = (inputImage - oldMin)*slope + newMin;
 
     % Just passing on the transfer Params
-    uniqueA = unique(inputImage(:));
-    transferParams = unique(scaledImage(:));
- end
+    uniqueA = unique(inputImage(:));    
+    P = (uniqueA - oldMin)*slope + newMin;
+end
