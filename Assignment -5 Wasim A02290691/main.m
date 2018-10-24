@@ -55,4 +55,42 @@ subplot(2,2,4); imshow(d3); title('Desired Image 3');
 pause;
 % -----  Finish Solving Problem 4  -----%
 
+% Read wirebond
+image = imread('Dowels.tif');
+
+% Erode and dilate or vice versa using varied size of square strel to get desired images
+se1 = strel('disk', 5);
+% Open-close
+d1 = imopen(image, se1);
+d1 = imclose(d1, se1);
+% Close-Open
+d2 = imclose(d1, se1);
+d2 = imopen(d2, se1);
+
+figure; 
+subplot(1, 3, 1); imshow(image); title('Input Image');
+subplot(1, 3, 2); imshow(d1); title('Open Close single operation');
+subplot(1, 3, 3); imshow(d1); title('Close open single operation');
+pause;
+
+d1 = image;
+d2 = image;
+for i = 2:5
+    se = strel('disk', i);
+    % Open Close
+    d1 = imopen(d1, se);
+    d1 = imclose(d1, se);
+    % Close open
+    d2 = imclose(d2, se);
+    d2 = imopen(d2, se);
+end
+
+figure; 
+subplot(1, 3, 1); imshow(image); title('Input Image');
+subplot(1, 3, 2); imshow(d1); title('Open Close Series operation');
+subplot(1, 3, 3); imshow(d1); title('Close open Series operation');
+pause;
+% -----  Finish Solving Problem 5  -----%
+
+
 close all
