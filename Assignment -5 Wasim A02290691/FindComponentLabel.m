@@ -1,42 +1,48 @@
-function [output] = FindComponentLabel()
+function [output, blobCount] = FindComponentLabel(image)
+% removeOverlaps = false;
+[row, col] = size(image);
 
 % Read wirebond
-image = imread('Ball.tif');
-blank = zeros(size(image));
-prevD = blank;
-output = blank;
+dilationImage = zeros(size(image)); % When a point is found, that point is dilated on this image
+prevDilatedImage = dilationImage; % Used to compare changes in dilation
+output = dilationImage; % Contains labelled circles / blobs
 
-se = strel('disk', 3);
-[row, col] = size(image);
-disp([row, col])
+se = strel('disk', 3); 
 
-count = 1;
+blobCount = 1;
+blobDim = [];
+
 for r = 1:row
     for c = 1:col
-        pixelO = image(r, c);
-        pixelB = output(r, c);        
+        pixelI = image(r, c);
+        pixelO = output(r, c);        
         % Only when a pixel in blank is black and and pixel in input image 
-        % is white
-        if (pixelO == 1 && pixelB == 0)
-            blank(r, c) = 1;
+        % is white.
+        % else it has already been lablled
+        if (pixelI == 1 && pixelO == 0)
+            dilationImage(r, c) = 1;
             while 1
-                blank = imdilate(blank, se);
-                blank = blank & image;
-                if(blank == prevD)
+                dilationImage = imdilate(dilationImage, se);
+                dilationImage = dilationImage & image;
+                if(dilationImage == prevDilatedImage)
+                    % No change is taking place and is worth breaking
                     break
                 end
-                prevD = blank;
+                prevDilatedImage = dilationImage;
             end
-            pos = find(blank==1);
-            output(pos) = count;
-            blank = zeros(size(image));
-            count = count + 1;
-            disp(count)
+            pos = find(dilationImage==1);            
+            
+            output(pos) = blobCount;
+            blobCount = blobCount + 1;
+            disp(blobCount)            
+
+            % Let's find another blob
+            dilationImage = zeros(size(image));
+            
         end
     end
 end
 
-output = output * (255 / count);
+output = output * (255 / blobCount);
 figure; imshow(uint8(output)); title('LabelledImage');
-
 end

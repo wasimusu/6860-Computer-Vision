@@ -108,6 +108,14 @@ subplot(1, 3, 3); imshow(d1); title('Close open Series operation');
 pause;
 % -----  Finish Solving Problem I-5  -----%
 
+image = imread('Ball.tif');
+[output, num_objects] = FindComponentLabel(image);
+disp("Total number of connected particles : " + num_objects);
+figure; imshow(output); title('Connected components Self defined');
+pause;
+% -----  Finish Solving Problem II-1  -----%
+
+
 % if appropriate result is not see in figure try running these probelms
 % individually
 % Finding connected components including those on border also
@@ -120,6 +128,12 @@ figure; imshow(uint8(labels)); title('Connected components');
 pause;
 % -----  Finish Solving Problem II-2  -----%
 
+[output, num_objects] = FindComponentLabelNoBorder(image, false);
+disp("Total number of connected particles : " + num_objects);
+figure; imshow(output); title('Connected components excluding those on borders');
+pause;
+% -----  Finish Solving Problem II-3  -----%
+
 % Finding connected components including those on border also
 wbImage = imclearborder(image);
 CC = bwconncomp(wbImage);
@@ -130,6 +144,12 @@ disp("Total number of connected particles : " + num_objects);
 figure; imshow(uint8(labels)); title('Connected components not residing on border');
 pause;
 % -----  Finish Solving Problem II-4  -----%
+
+[output, num_objects] = FindComponentLabelNoBorder(image, true);
+disp("Total number of connected particles : " + num_objects);
+figure; imshow(output); title('Nonoverlapping connected components');
+pause;
+% -----  Finish Solving Problem II-5  -----%
 
 
 close all
