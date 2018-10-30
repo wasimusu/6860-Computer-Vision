@@ -21,9 +21,10 @@ d1 = imerode(image, seC);
 d2 = imerode(imageC, se);
 
 corners = d1 & d2;
-disp(sum(corners(:)));
+disp(["Number of corners : ", sum(corners(:))]);
 
 figure; imshow(corners); title('Corners')
+pause;
 % -----  Finish Solving Problem I-2  -----%
 
 % Read wirebond
@@ -85,8 +86,8 @@ d2 = imopen(d2, se1);
 
 figure; 
 subplot(1, 3, 1); imshow(image); title('Input Image');
-subplot(1, 3, 2); imshow(d1); title('Open Close single operation');
-subplot(1, 3, 3); imshow(d1); title('Close open single operation');
+subplot(1, 3, 2); imshow(d1); title('Single Open Close Op');
+subplot(1, 3, 3); imshow(d1); title('Single Close open Op');
 pause;
 
 d1 = image;
@@ -103,15 +104,17 @@ end
 
 figure; 
 subplot(1, 3, 1); imshow(image); title('Input Image');
-subplot(1, 3, 2); imshow(d1); title('Open Close Series operation');
-subplot(1, 3, 3); imshow(d1); title('Close open Series operation');
+subplot(1, 3, 2); imshow(d1); title('Series Open Close Op');
+subplot(1, 3, 3); imshow(d1); title('Series Close Open Op');
 pause;
 % -----  Finish Solving Problem I-5  -----%
 
+noBorder = false;
+removeOverlap = false;
 image = imread('Ball.tif');
-[output, num_objects] = FindComponentLabel(image);
+[output, num_objects] = FindComponentLabel(image, removeOverlap, noBorder);
 disp("Total number of connected particles : " + num_objects);
-figure; imshow(output); title('Connected components Self defined');
+figure; imshow(output); title('Connected components - Self defined');
 pause;
 % -----  Finish Solving Problem II-1  -----%
 
@@ -123,33 +126,42 @@ CC = bwconncomp(image);
 labels = labelmatrix(CC);
 num_objects = CC.NumObjects;
 labels = labels * (255 / num_objects);
+labels = uint8(labels);
 disp("Total number of connected particles : " + num_objects);
-figure; imshow(uint8(labels)); title('Connected components');
+figure; 
+subplot(1, 2, 1); imshow(labels); title('Matlab');
+subplot(1, 2, 2); imshow(output); title('Self Defined');
 pause;
 % -----  Finish Solving Problem II-2  -----%
 
-[output, num_objects] = FindComponentLabelNoBorder(image, false);
+noBorder = true;
+removeOverlap = false;
+[output, num_objects] = FindComponentLabel(image, removeOverlap, noBorder);
 disp("Total number of connected particles : " + num_objects);
 figure; imshow(output); title('Connected components excluding those on borders');
 pause;
 % -----  Finish Solving Problem II-3  -----%
 
-% Finding connected components including those on border also
+% Finding connected components excluding those on border also
 wbImage = imclearborder(image);
 CC = bwconncomp(wbImage);
 labels = labelmatrix(CC);
 num_objects = CC.NumObjects;
 labels = labels * (255 / num_objects);
+labels = uint8(labels);
 disp("Total number of connected particles : " + num_objects);
-figure; imshow(uint8(labels)); title('Connected components not residing on border');
+figure; 
+subplot(1, 2, 1); imshow(labels); title('Matlab');
+subplot(1, 2, 2); imshow(output); title('Self Defined');
 pause;
 % -----  Finish Solving Problem II-4  -----%
 
-[output, num_objects] = FindComponentLabelNoBorder(image, true);
+noBorder = true;
+removeOverlap = true;
+[output, num_objects] = FindComponentLabel(image, removeOverlap, noBorder);
 disp("Total number of connected particles : " + num_objects);
 figure; imshow(output); title('Nonoverlapping connected components');
 pause;
 % -----  Finish Solving Problem II-5  -----%
-
 
 close all
