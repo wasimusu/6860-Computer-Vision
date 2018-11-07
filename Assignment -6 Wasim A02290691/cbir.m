@@ -1,3 +1,4 @@
+% No of bins for each channel
 hBin = 4;
 sBin = 4;
 vBin = 4;
@@ -14,12 +15,18 @@ hist2 = computeHist(image2, hBin, sBin, vBin);
 hist3 = computeHist(image3, hBin, sBin, vBin);
 hist4 = computeHist(image4, hBin, sBin, vBin);
 
-score1 = computeDistance(hist1, hist2)
-score2 = computeDistance(hist3, hist4)
-score3 = computeDistance(hist1, hist3)
-score4 = computeDistance(hist2, hist4)
-score4 = computeDistance(hist2, hist3)
+% contains all histogram
+hist = [hist1; hist2; hist3; hist4];
 
-disp(["Matching score : ", score]);
-disp(["Sum of hist1 : ", sum(hist1)]);
-stem(hist1);
+% Compute the adjacency matrix
+scores = zeros(4, 4);
+for i = 1:4
+    h1 = hist(i, :);
+    for j = 1:4
+        h2 = hist(j, :);
+        score = computeDistance(h1, h2);
+        scores(i, j) = score;
+    end
+end
+
+disp(scores);
