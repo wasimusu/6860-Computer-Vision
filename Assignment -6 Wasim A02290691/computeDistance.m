@@ -1,12 +1,10 @@
 function score = computeDistance(hist1, hist2)
-
-    len = length(hist1);
-    score = zeros(1, len);
-
-    for i = 1 : len
-        score(i) = min(hist1(i), hist2(i));
-    end
+    % Length of vector to loop over them
+    len = length(hist1);    
     
-    score = sum(score);
-
+    % Loop over histogram and compute distance
+    score = 0;
+    for i = 1 : len
+        score = score + min(hist1(i), hist2(i));
+    end
 end

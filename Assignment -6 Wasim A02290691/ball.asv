@@ -18,38 +18,36 @@ bw = imerode(bw, str);
 str = strel('square', 3);
 bw = imdilate(bw, str);
 bw = imerode(bw, str);
-bw = imdilate(bw, str);
-bw = imerode(bw, str);
-bw = imdilate(bw, str);
-bw = imdilate(bw, str);
-bw = imdilate(bw, str);
-bw = imdilate(bw, str);
-bw = imerode(bw, str);
-bw = imerode(bw, str);
-bw = imdilate(bw, str);
-bw = imdilate(bw, str);
 
-size(h)
-size(bw)
-output = and(h, bw);
-imshow(bw); title('Ball');
+% bw = imdilate(bw, str);
+% bw = imerode(bw, str);
+% bw = imdilate(bw, str);
+% bw = imdilate(bw, str);
+% bw = imdilate(bw, str);
+% bw = imdilate(bw, str);
+% bw = imerode(bw, str);
+% bw = imerode(bw, str);
+% bw = imdilate(bw, str);
+% bw = imdilate(bw, str);
+% 
+% size(h)
+% size(bw)
+% output = and(h, bw);
+% imshow(bw);
 
 % Do another thresholding to detect the shadow.
 shadow = imbinarize(i, 0.38);
 shadow = imerode(shadow, str);
-
-% Complement image into 
 shadow = imcomplement(shadow);
 shadow = imclearborder(shadow);
 
-% Do a series of morphological operations
 shadow = imerode(shadow, str);
 shadow = imerode(shadow, str);
 shadow = imdilate(shadow, str);
 shadow = imdilate(shadow, str);
 
-shadow = shadow & image(:, :, 1);
-figure; imshow(shadow); title('Shadow');
+shadow = shadow 
+imshow(shadow);
 
 % figure; imshow(bw);
 % figure; imshow(i);

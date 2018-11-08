@@ -22,8 +22,5 @@ function [hist] = CalNormalizedHSVHist(image, hBin, sBin, vBin)
                 index = index + 1;
             end
         end
-    end
-    
-    sum(["Sum of hist :" ,hist])
-    
+    end        
 end
