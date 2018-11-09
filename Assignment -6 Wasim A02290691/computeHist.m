@@ -1,4 +1,4 @@
-function [hist] = CalNormalizedHSVHist(image, hBin, sBin, vBin)
+function [hist] = computeHist(image, hBin, sBin, vBin)
 
 %   Change the image color space
     image = rgb2hsv(image);
@@ -8,22 +8,22 @@ function [hist] = CalNormalizedHSVHist(image, hBin, sBin, vBin)
     imageSize = row*col;
 
 %   Compute histogram of the three channels    
-    histH = imhist(image(:, :, 1), hBin)/imageSize;
-    histV = imhist(image(:, :, 2), sBin)/imageSize;
-    histS = imhist(image(:, :, 3), vBin)/imageSize;
-    
+    hI = image(:, :, 1)*hBin;
+    sI = image(:, :, 2)*sBin;
+    vI = image(:, :, 3)*vBin;
+        
 %   merge the histogram of three channels into one
-    hist = zeros(1, hBin*sBin*vBin);
-    index = 1;
-    for h = 1:hBin
-        for s = 1:sBin
-            for v = 1:vBin
-                hist(index) = histH(h)*histS(s)*histV(v);
-                index = index + 1;
-            end
+    hist = zeros(hBin, sBin, vBin);
+    for r = 1:row
+        for c = 1:col
+            ih = min(ceil(hI(r, c))+1, hBin);
+            is = min(ceil(sI(r, c))+1, sBin);
+            iv = min(ceil(vI(r, c))+1, vBin);
+%             disp([ih, is, iv]);
+            hist(ih, is, iv) = hist(ih, is, iv) + 1;
         end
-    end
+    end    
     
-    sum(["Sum of hist :" ,hist])
-    
+    hist = hist/imageSize;
+    hist = hist(:);
 end

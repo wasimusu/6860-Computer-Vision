@@ -17,16 +17,16 @@ recovered_sign2 = extractSign(output2, 90);
 r1 = (sign1 == recovered_sign1);
 r2 = (sign2 == recovered_sign2);
 
+% Compute the recovered bits percentage
 [row, col] = size(sign1);
+disp(["Recovered : ", 100*sum(r1(:))/(row*col)]);
+disp(["Recovered : ", 100*sum(r2(:))/(row*col)]);
 
 % Differences between watermarked and normal images
 diff1 = image - output1;
 diff2 = output2 - image;
 diff1 = Scaling(diff1, [0 255]);
 diff2 = Scaling(diff2, [0 255]);
-
-disp(sum(r1(:))/(row*col));
-disp(sum(r2(:))/(row*col));
 
 figure;
 subplot(1, 3, 1); imshow(image); title('Original Image'); 

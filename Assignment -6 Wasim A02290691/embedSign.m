@@ -1,14 +1,15 @@
 function [sign, output] = embedSign(image, beta)
 
+    level = 3;
     dwtmode('per');
-    [C, S] = wavedec2(image, 3, 'db9');
+    [C, S] = wavedec2(image, level, 'db9');
 
     % Get the A, H, V, D for third level
-    A = appcoef2(C, S, 'db9', 3);
+    A = appcoef2(C, S, 'db9', level);
 
-    rng(2000);  % Fix the random number generator to generate same random values
+    rng(50);  % Fix the random number generator to generate same random values
     [row, col] = size(A);
-    sign = randi([0 1], row, col);
+    sign = randi([0 1], row, col);  % The random values which are to be embedded
 
     % Embed signature into pixels
     for r = 1 : row
@@ -33,8 +34,8 @@ function [sign, output] = embedSign(image, beta)
         end
     end
 
+    % Put the changed approx coeff back into C and reconstruct image
     signedC = C;
-%     signedC(row*col+1: 2*row*col) = H;
     signedC(1 : row*col) = A;
     output = waverec2(signedC, S, 'db9');
     output = uint8(output);

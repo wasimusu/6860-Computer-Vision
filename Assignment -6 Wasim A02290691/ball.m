@@ -16,23 +16,29 @@ str = strel('square', 5);
 bw = imerode(bw, str);
 
 str = strel('square', 3);
-bw = imdilate(bw, str);
-bw = imerode(bw, str);
-bw = imdilate(bw, str);
-bw = imerode(bw, str);
-bw = imdilate(bw, str);
-bw = imdilate(bw, str);
-bw = imdilate(bw, str);
-bw = imdilate(bw, str);
-bw = imerode(bw, str);
-bw = imerode(bw, str);
-bw = imdilate(bw, str);
-bw = imdilate(bw, str);
 
-size(h)
-size(bw)
-output = and(h, bw);
-imshow(bw); title('Ball');
+for k = 1:12
+    bw = imdilate(bw, str);
+end
+
+for k = 1:12
+    bw = imerode(bw, str);
+end
+
+% find centroid and mark it
+stats = regionprops(imcomplement(bw));
+centroid = stats.Centroid;
+x = centroid(1);
+y = centroid(2);
+markedBall = insertMarker(image, [x y]);
+
+% Display intermediate results
+figure;
+subplot(2, 2, 1); imshow(markedBall); title('Marked image in ball');
+subplot(2, 2, 2); imshow(h); title('H channel');
+subplot(2, 2, 3); bar(imhist(h, 50)); title('Ball after morphological operations');
+subplot(2, 2, 4); imshow(bw); title('Ball after morphological operations');
+pause;
 
 % Do another thresholding to detect the shadow.
 shadow = imbinarize(i, 0.38);
@@ -48,9 +54,15 @@ shadow = imerode(shadow, str);
 shadow = imdilate(shadow, str);
 shadow = imdilate(shadow, str);
 
-shadow = shadow & image(:, :, 1);
-figure; imshow(shadow); title('Shadow');
+% Find shadow and mark shadow
+stats = regionprops(shadow);
+centroid = stats.Centroid;
+x = centroid(1);
+y = centroid(2);
+markedShadow = insertMarker(image,[x y]);
 
-% figure; imshow(bw);
-% figure; imshow(i);
-% figure; imshow(shadow);
+figure;
+subplot(2, 2, 1); imshow(markedBall); title('Marked shadow in image');
+subplot(2, 2, 2); imshow(i); title('I channel');
+subplot(2, 2, 3); bar(imhist(i, 50)); title('Hist to determine threshold levels');
+subplot(2, 2, 4); imshow(shadow); title('Shadow after morphological operations');
